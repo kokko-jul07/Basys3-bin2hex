@@ -7,11 +7,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module bin2hex(
-    input              CLK,
-    input              RST,
-    input      [15:0]  SW,
-    output reg  [6:0]  SEG,
-    output reg  [3:0]  AN
+    input             CLK,
+    input             RST,
+    input      [15:0] SW,
+    output reg  [6:0] SEG,
+    output reg  [3:0] AN,
+    output     [15:0] LED
     );
 
     reg [15:0] counter;
@@ -45,4 +46,10 @@ module bin2hex(
             default: begin SEG = 7'b11111111; AN = 4'b1111; end
         endcase
     end
+
+    generate begin
+        genvar i;
+        for ( i=0; i<16; i=i+1 )
+            turnonLED led ( .CLK(CLK), .RST(RST), .SW(SW[i]), .LED(LED[i]) );
+    end endgenerate
 endmodule
